@@ -141,7 +141,7 @@ body {
 /* Custom Select */
 .custom-select select {
     width: 100%;
-    background: var(--surface);
+    background: var(--bg-side);
     border: 1px solid var(--border);
     color: var(--text-primary);
     padding: 14px;
@@ -154,6 +154,11 @@ body {
 
 .custom-select select:focus {
     border-color: var(--accent);
+}
+
+.custom-select select option {
+    background-color: var(--bg-side);
+    color: var(--text-primary);
 }
 
 /* Theme Grid */
