@@ -6,30 +6,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const convertBtn = document.getElementById('convertBtn');
     const clearBtn = document.getElementById('clearBtn');
     const formatSelect = document.getElementById('formatSelect');
-    const themeBtns = document.querySelectorAll('.theme-btn');
     const fileCountEl = document.getElementById('fileCount');
     const totalSizeEl = document.getElementById('totalSize');
 
     let selectedFiles = [];
-
-    // --- Theme Logic ---
-    const savedTheme = localStorage.getItem('tb-suite-theme') || 'dark';
-    setTheme(savedTheme);
-
-    themeBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const theme = btn.getAttribute('data-theme');
-            setTheme(theme);
-        });
-    });
-
-    function setTheme(theme) {
-        document.body.setAttribute('data-theme', theme);
-        localStorage.setItem('tb-suite-theme', theme);
-        themeBtns.forEach(b => {
-            b.classList.toggle('active', b.getAttribute('data-theme') === theme);
-        });
-    }
 
     // --- File Handling ---
     dropZone.addEventListener('click', () => fileInput.click());
