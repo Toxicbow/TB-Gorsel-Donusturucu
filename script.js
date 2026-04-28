@@ -6,8 +6,28 @@ document.addEventListener('DOMContentLoaded', () => {
     const convertBtn = document.getElementById('convertBtn');
     const clearBtn = document.getElementById('clearBtn');
     const formatSelect = document.getElementById('formatSelect');
+    const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
 
     let selectedFiles = [];
+
+    // Theme Logic
+    const currentTheme = localStorage.getItem('theme') ? localStorage.getItem('theme') : null;
+    if (currentTheme) {
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        if (currentTheme === 'light') {
+            toggleSwitch.checked = true;
+        }
+    }
+
+    toggleSwitch.addEventListener('change', (e) => {
+        if (e.target.checked) {
+            document.documentElement.setAttribute('data-theme', 'light');
+            localStorage.setItem('theme', 'light');
+        } else {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            localStorage.setItem('theme', 'dark');
+        }
+    });
 
     // Trigger file input
     dropZone.addEventListener('click', () => fileInput.click());
@@ -37,9 +57,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const fileList = Array.from(files);
         
         fileList.forEach(file => {
-            if (!file.type.startsWith('image/')) return;
+            // Support more image types including svg, ico, tiff, avif
+            const supportedTypes = ['image/png', 'image/jpeg', 'image/webp', 'image/bmp', 'image/svg+xml', 'image/x-icon', 'image/tiff', 'image/avif'];
+            if (!supportedTypes.includes(file.type) && !file.name.match(/\.(png|jpg|jpeg|webp|bmp|svg|ico|tiff|avif)$/i)) return;
             
-            // Avoid duplicates based on name and size
             if (selectedFiles.some(f => f.name === file.name && f.size === file.size)) return;
 
             selectedFiles.push(file);
@@ -94,7 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Conversion Logic
     convertBtn.addEventListener('click', async () => {
         const targetFormat = formatSelect.value;
-        const extension = targetFormat.split('/')[1].replace('jpeg', 'jpg');
+        const extension = targetFormat.split('/')[1].replace('jpeg', 'jpg').replace('svg+xml', 'svg').replace('x-icon', 'ico');
         
         convertBtn.disabled = true;
         convertBtn.innerHTML = '<span>⏳</span> İşleniyor...';
@@ -107,6 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 downloadLink(dataUrl, fileName);
             } catch (error) {
                 console.error('Dönüştürme hatası:', error);
+                alert(`${file.name} dönüştürülürken hata oluştu. Tarayıcınız bu formatı desteklemiyor olabilir.`);
             }
         }
 
@@ -126,14 +148,24 @@ document.addEventListener('DOMContentLoaded', () => {
                     canvas.height = img.height;
                     const ctx = canvas.getContext('2d');
                     
-                    // Handle transparency for JPG (white background)
-                    if (format === 'image/jpeg') {
+                    // Handle transparency for non-transparent formats
+                    if (format === 'image/jpeg' || format === 'image/bmp') {
                         ctx.fillStyle = '#FFFFFF';
                         ctx.fillRect(0, 0, canvas.width, canvas.height);
                     }
                     
                     ctx.drawImage(img, 0, 0);
-                    resolve(canvas.toDataURL(format, 0.9)); // 0.9 quality for JPG/WEBP
+                    
+                    try {
+                        const dataUrl = canvas.toDataURL(format, 0.9);
+                        // Check if the browser actually supported the format
+                        if (!dataUrl.startsWith(`data:${format}`)) {
+                            throw new Error('Unsupported format');
+                        }
+                        resolve(dataUrl);
+                    } catch (err) {
+                        reject(err);
+                    }
                 };
                 img.onerror = reject;
                 img.src = e.target.result;

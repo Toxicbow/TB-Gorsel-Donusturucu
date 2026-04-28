@@ -10,6 +10,12 @@
 </head>
 <body>
     <div class="container">
+        <div class="theme-switch-wrapper">
+            <label class="theme-switch" for="checkbox">
+                <input type="checkbox" id="checkbox" />
+                <div class="slider round"></div>
+            </label>
+        </div>
         <header>
             <h1>TB Görsel Dönüştürücü</h1>
             <p>Görsellerinizi anında PNG, JPG veya WEBP formatına dönüştürün.</p>
@@ -17,10 +23,10 @@
 
         <main>
             <div class="upload-zone" id="dropZone">
-                <input type="file" id="fileInput" multiple accept="image/png, image/jpeg, image/webp, image/bmp">
+                <input type="file" id="fileInput" multiple accept="image/png, image/jpeg, image/webp, image/bmp, image/svg+xml, image/x-icon, image/tiff, image/avif">
                 <span class="icon">🖼️</span>
                 <p>Dosyaları sürükleyip bırakın veya <span>Göz Atın</span></p>
-                <p style="font-size: 0.8rem; margin-top: 10px;">Desteklenen: PNG, JPG, WEBP, BMP</p>
+                <p style="font-size: 0.8rem; margin-top: 10px;">Desteklenen: PNG, JPG, WEBP, BMP, SVG, ICO, TIFF, AVIF</p>
             </div>
 
             <div class="controls" id="controls" style="display: none;">
@@ -29,6 +35,8 @@
                         <option value="image/png">PNG Formatına Çevir</option>
                         <option value="image/jpeg">JPG Formatına Çevir</option>
                         <option value="image/webp">WEBP Formatına Çevir</option>
+                        <option value="image/bmp">BMP Formatına Çevir</option>
+                        <option value="image/avif">AVIF Formatına Çevir</option>
                     </select>
                 </div>
                 
