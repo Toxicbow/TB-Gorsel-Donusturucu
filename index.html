@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TB Görsel Dönüştürücü</title>
+    <meta name="description" content="Ücretsiz, hızlı ve güvenli tarayıcı tabanlı görsel dönüştürücü. PNG, JPG, WEBP formatları arasında anında geçiş yapın.">
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>TB Görsel Dönüştürücü</h1>
+            <p>Görsellerinizi anında PNG, JPG veya WEBP formatına dönüştürün.</p>
+        </header>
+
+        <main>
+            <div class="upload-zone" id="dropZone">
+                <input type="file" id="fileInput" multiple accept="image/png, image/jpeg, image/webp, image/bmp">
+                <span class="icon">🖼️</span>
+                <p>Dosyaları sürükleyip bırakın veya <span>Göz Atın</span></p>
+                <p style="font-size: 0.8rem; margin-top: 10px;">Desteklenen: PNG, JPG, WEBP, BMP</p>
+            </div>
+
+            <div class="controls" id="controls" style="display: none;">
+                <div class="select-wrapper">
+                    <select id="formatSelect">
+                        <option value="image/png">PNG Formatına Çevir</option>
+                        <option value="image/jpeg">JPG Formatına Çevir</option>
+                        <option value="image/webp">WEBP Formatına Çevir</option>
+                    </select>
+                </div>
+                
+                <button id="convertBtn" class="btn btn-primary">
+                    <span>🚀</span> Dönüştür ve İndir
+                </button>
+                
+                <button id="clearBtn" class="btn btn-secondary">
+                    <span>🗑️</span> Temizle
+                </button>
+            </div>
+
+            <div class="preview-grid" id="previewGrid">
+                <!-- Önizlemeler buraya gelecek -->
+            </div>
+        </main>
+
+        <footer style="text-align: center; margin-top: 40px; color: var(--text-dim); font-size: 0.8rem;">
+            <p>&copy; 2026 TB Görsel Dönüştürücü. Tamamen yerel çalışır, verileriniz asla sunucuya gitmez.</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
