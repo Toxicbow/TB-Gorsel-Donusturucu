@@ -3,61 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TB Görsel Dönüştürücü</title>
-    <meta name="description" content="Ücretsiz, hızlı ve güvenli tarayıcı tabanlı görsel dönüştürücü. PNG, JPG, WEBP formatları arasında anında geçiş yapın.">
+    <title>TB Image Suite v3 | Profesyonel Görsel Dönüştürücü</title>
+    <meta name="description" content="Ücretsiz, hızlı ve güvenli tarayıcı tabanlı görsel dönüştürücü. PNG, JPG, WEBP, HEIC, TIFF, PDF desteği.">
     <link rel="icon" type="image/png" href="logo.png">
     <link rel="stylesheet" href="style.css">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/utif@3.1.0/UTIF.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
 </head>
-<body>
-    <div class="container">
-        <div class="theme-switch-wrapper">
-            <label class="theme-switch" for="checkbox">
-                <input type="checkbox" id="checkbox" />
-                <div class="slider round"></div>
-            </label>
-        </div>
-        <header>
-            <h1>TB Görsel Dönüştürücü</h1>
-            <p>Görsellerinizi anında PNG, JPG veya WEBP formatına dönüştürün.</p>
-        </header>
-
-        <main>
-            <div class="upload-zone" id="dropZone">
-                <input type="file" id="fileInput" multiple accept="image/png, image/jpeg, image/webp, image/bmp, image/svg+xml, image/x-icon, image/tiff, image/avif">
-                <span class="icon">🖼️</span>
-                <p>Dosyaları sürükleyip bırakın veya <span>Göz Atın</span></p>
-                <p style="font-size: 0.8rem; margin-top: 10px;">Desteklenen: PNG, JPG, WEBP, BMP, SVG, ICO, TIFF, AVIF</p>
+<body data-theme="dark">
+    <div class="app-wrapper">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo-area">
+                <img src="logo.png" alt="TB Logo" class="app-logo">
+                <h2>TB Suite <span>v3</span></h2>
             </div>
-
-            <div class="controls" id="controls" style="display: none;">
-                <div class="select-wrapper">
-                    <select id="formatSelect">
-                        <option value="image/png">PNG Formatına Çevir</option>
-                        <option value="image/jpeg">JPG Formatına Çevir</option>
-                        <option value="image/webp">WEBP Formatına Çevir</option>
-                        <option value="image/bmp">BMP Formatına Çevir</option>
-                        <option value="image/avif">AVIF Formatına Çevir</option>
-                    </select>
+            
+            <nav class="settings-nav">
+                <div class="section-title">AYARLAR</div>
+                
+                <div class="setting-group">
+                    <label>Çıktı Formatı</label>
+                    <div class="custom-select">
+                        <select id="formatSelect">
+                            <option value="image/png">PNG (Kayıpsız)</option>
+                            <option value="image/jpeg">JPG (Yüksek Sıkıştırma)</option>
+                            <option value="image/webp">WebP (Modern)</option>
+                            <option value="image/bmp">BMP (Standart)</option>
+                            <option value="image/avif">AVIF (Yeni Nesil)</option>
+                        </select>
+                    </div>
                 </div>
-                
-                <button id="convertBtn" class="btn btn-primary">
-                    <span>🚀</span> Dönüştür ve İndir
-                </button>
-                
-                <button id="clearBtn" class="btn btn-secondary">
-                    <span>🗑️</span> Temizle
-                </button>
+
+                <div class="setting-group">
+                    <label>Tema Seçimi</label>
+                    <div class="theme-grid">
+                        <button class="theme-btn active" data-theme="dark" title="Gece Modu"></button>
+                        <button class="theme-btn" data-theme="light" title="Gündüz Modu"></button>
+                        <button class="theme-btn" data-theme="midnight" title="Gece Yarısı"></button>
+                        <button class="theme-btn" data-theme="arctic" title="Kutup Soğuğu"></button>
+                        <button class="theme-btn" data-theme="neon" title="Neon Matris"></button>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button id="convertBtn" class="btn-main">
+                        <span class="icon">🚀</span> Dönüştür ve İndir
+                    </button>
+                    <button id="clearBtn" class="btn-sub">
+                        <span class="icon">🗑️</span> Hepsini Temizle
+                    </button>
+                </div>
+            </nav>
+
+            <div class="sidebar-footer">
+                <p>&copy; 2026 Toxicbow</p>
+                <span>v3.0.2 - Profesyonel Sürüm</span>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="content-area">
+            <header class="content-header">
+                <div class="header-info">
+                    <h1>Hoş Geldiniz</h1>
+                    <p>Dosyalarınızı sürükleyin ve saniyeler içinde dönüştürün.</p>
+                </div>
+                <div class="stats-bar">
+                    <div class="stat">
+                        <span class="val" id="fileCount">0</span>
+                        <span class="lab">Dosya</span>
+                    </div>
+                    <div class="stat">
+                        <span class="val" id="totalSize">0 KB</span>
+                        <span class="lab">Toplam Boyut</span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="drop-zone-container">
+                <div class="upload-zone" id="dropZone">
+                    <input type="file" id="fileInput" multiple accept="image/*, .heic, .heif, .tiff, .tif, .pdf">
+                    <div class="upload-content">
+                        <div class="upload-icon-wrapper">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
+                            </svg>
+                        </div>
+                        <h3>Dosyaları Buraya Bırakın</h3>
+                        <p>PNG, JPG, WEBP, BMP, SVG, HEIC, TIFF ve PDF desteklenir</p>
+                        <span class="browse-btn">Bilgisayardan Seç</span>
+                    </div>
+                </div>
             </div>
 
-            <div class="preview-grid" id="previewGrid">
-                <!-- Önizlemeler buraya gelecek -->
+            <div class="preview-container">
+                <div class="grid-header">
+                    <h3>Yüklenen Dosyalar</h3>
+                    <div class="view-options">
+                        <button class="view-btn active" id="gridView">Grid</button>
+                        <button class="view-btn" id="listView">Liste</button>
+                    </div>
+                </div>
+                <div class="preview-grid" id="previewGrid">
+                    <!-- Dinamik olarak doldurulacak -->
+                </div>
             </div>
         </main>
-
-        <footer style="text-align: center; margin-top: 40px; color: var(--text-dim); font-size: 0.8rem;">
-            <p>&copy; 2026 TB Görsel Dönüştürücü. Tamamen yerel çalışır, verileriniz asla sunucuya gitmez.</p>
-        </footer>
     </div>
+
+    <!-- Notification system -->
+    <div id="toastContainer"></div>
 
     <script src="script.js"></script>
 </body>
